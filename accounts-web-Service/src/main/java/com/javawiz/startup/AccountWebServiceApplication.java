@@ -19,13 +19,13 @@ import com.javawiz.service.WebAccountsService;
 @SpringBootApplication
 @EnableEurekaClient 
 @ComponentScan(useDefaultFilters = false) // Disable component scanner
-public class EurekaServer {
+public class AccountWebServiceApplication {
 
 	/**
 	 * URL uses the logical name of account-service - upper or lower case,
 	 * doesn't matter.
 	 */
-	public static final String ACCOUNTS_SERVICE_URL = "http://ACCOUNTS-SERVICE";
+	public static final String API_GATEWAY_URL = "http://192.168.178.68:4444/accounts-service";
 
 	/**
 	 * Run the application using Spring Boot and an embedded servlet engine.
@@ -34,7 +34,7 @@ public class EurekaServer {
 	 *            Program arguments - ignored.
 	 */
 	public static void main(String[] args) {
-		SpringApplication.run(EurekaServer.class, args);
+		SpringApplication.run(AccountWebServiceApplication.class, args);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class EurekaServer {
 	 * 
 	 * @return
 	 */
-	@LoadBalanced
+	//@LoadBalanced
 	@Bean
 	RestTemplate restTemplate() {
 		return new RestTemplate();
@@ -56,7 +56,7 @@ public class EurekaServer {
 	 */
 	@Bean
 	public WebAccountsService accountsService() {
-		return new WebAccountsService(ACCOUNTS_SERVICE_URL);
+		return new WebAccountsService(API_GATEWAY_URL);
 	}
 
 	/**

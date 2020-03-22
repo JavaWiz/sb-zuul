@@ -1,0 +1,25 @@
+server:
+  port: 4444
+
+spring:
+  application:
+    name: zuul-api-gateway
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:1111/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+logging:
+  level:
+    com.javawiz: info
