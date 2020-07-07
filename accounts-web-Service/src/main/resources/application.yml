@@ -8,6 +8,12 @@ info:
     description: This is a client app which is consumed account-service microservice.
     version: 1.0.0
 
+api:
+  config:
+    properties:
+      apiGatewayUrl: http://localhost:4444/
+      accountServiceId: accounts-service
+
 #  Discovery Server Access
 #  1. DEV ONLY: Reduce the lease renewal interval to speed up registration
 #  2. Define URL of registration server (defaultZone)

@@ -1,51 +1,40 @@
 package com.javawiz.service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.javawiz.config.ConfigProperties;
+import com.javawiz.exception.AccountNotFoundException;
+import com.javawiz.model.Account;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.javawiz.exception.AccountNotFoundException;
-import com.javawiz.model.Account;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Hide the access to the microservice inside this local service.
  */
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class WebAccountsService {
 
-	@Autowired
-	protected RestTemplate restTemplate;
-
-	protected String serviceUrl;
-
-	protected Logger logger = Logger.getLogger(WebAccountsService.class
-			.getName());
-
-	public WebAccountsService(String serviceUrl) {
-		this.serviceUrl = serviceUrl.startsWith("http") ? serviceUrl
-				: "http://" + serviceUrl;
-	}
+	private final RestTemplate restTemplate;
+	private final ConfigProperties configProperties;
 
 	public Account findByNumber(String accountNumber) {
-
-		logger.info("findByNumber() invoked: for " + accountNumber);
-		return restTemplate.getForObject(serviceUrl + "/accounts/{number}",
+		log.info("findByNumber() invoked: for " + accountNumber);
+		return restTemplate.getForObject(getServiceUrl() + "/accounts/{number}",
 				Account.class, accountNumber);
 	}
 
 	public List<Account> byOwnerContains(String name) {
-		logger.info("byOwnerContains() invoked:  for " + name);
+		log.info("byOwnerContains() invoked:  for " + name);
 		Account[] accounts = null;
 
 		try {
-			accounts = restTemplate.getForObject(serviceUrl
+			accounts = restTemplate.getForObject(getServiceUrl()
 					+ "/accounts/owner/{name}", Account[].class, name);
 		} catch (HttpClientErrorException e) { // 404
 			// Nothing found
@@ -58,12 +47,18 @@ public class WebAccountsService {
 	}
 
 	public Account getByNumber(String accountNumber) {
-		Account account = restTemplate.getForObject(serviceUrl
+		Account account = restTemplate.getForObject(getServiceUrl()
 				+ "/accounts/{number}", Account.class, accountNumber);
 
 		if (account == null)
 			throw new AccountNotFoundException(accountNumber);
 		else
 			return account;
+	}
+
+	private String getServiceUrl(){
+		String serviceUrl = configProperties.getApiGatewayUrl() + configProperties.getAccountServiceId();
+		log.info("ServiceUrl: {} " + serviceUrl);
+		return serviceUrl;
 	}
 }

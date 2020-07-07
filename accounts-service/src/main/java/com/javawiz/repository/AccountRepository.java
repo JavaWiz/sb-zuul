@@ -1,16 +1,18 @@
 package com.javawiz.repository;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
 
 import com.javawiz.entity.Account;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository for Account data implemented using Spring Data JPA.
  * 
  */
-public interface AccountRepository extends Repository<Account, Long> {
+@Repository
+public interface AccountRepository extends JpaRepository<Account, Long> {
 	/**
 	 * Find an account with the specified account number.
 	 *

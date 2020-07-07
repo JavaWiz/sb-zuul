@@ -87,6 +87,10 @@ public class Account implements Serializable {
 		return balance.setScale(2, RoundingMode.HALF_EVEN);
 	}
 
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
+	}
+
 	public void withdraw(BigDecimal amount) {
 		balance.subtract(amount);
 	}

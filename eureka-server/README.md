@@ -57,4 +57,4 @@ eureka:
 
 Here we’re configuring an application port – `1111` is the default one for Eureka servers. We are telling the built-in Eureka Client not to register with itself because our application should be acting as a server.
 
-Now we’ll point our browser to <a href="http://localhost:1111">http://localhost:1111</a> to view the Eureka dashboard, where we will later inspecting the registered instances.
+Now we’ll point our browser to [http://localhost:1111](http://localhost:1111) to view the Eureka dashboard, where we will later inspecting the registered instances.
